@@ -42,7 +42,7 @@ const RelationshipCounter: React.FC = () => {
 
     return (
         <div>
-            <h1>❤️ Nosso Tempo Juntos ❤️</h1>
+            <h1>❤️ Nosso Tempo Juntos</h1>
             <p>
                 Estamos juntos há: <br />
                 <strong>{months}</strong> meses, <strong>{days}</strong> dias,{' '}
