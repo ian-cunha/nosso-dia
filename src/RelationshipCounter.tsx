@@ -2,41 +2,51 @@
 import React, { useState, useEffect } from 'react';
 
 const RelationshipCounter: React.FC = () => {
-    const [days, setDays] = useState<number>(0);
     const [months, setMonths] = useState<number>(0);
-    const [hours, setHours] = useState<number>(0);
-    const [minutes, setMinutes] = useState<number>(0);
-    const [seconds, setSeconds] = useState<number>(0);
+    const [daysUntilNextMonth, setDaysUntilNextMonth] = useState<number>(0);
 
     const startDate = new Date('2024-07-06');
 
     useEffect(() => {
         const calculateTime = () => {
             const today = new Date();
-            const timeDiff = today.getTime() - startDate.getTime();
 
-            // Calcula os dias
-            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            setDays(daysDiff);
+            // Cálculo dos meses, contando o mês inicial como 1
+            let monthsDiff = today.getMonth() - startDate.getMonth() + (today.getFullYear() - startDate.getFullYear()) * 12;
+            monthsDiff += 1; // Adiciona 1 para contar o mês inicial (junho de 2024) como 1
+            if (today.getDate() < startDate.getDate()) {
+                monthsDiff--; // Subtrai 1 se ainda não passou o dia 6
+            }
+            setMonths(Math.max(0, monthsDiff));
 
-            // Calcula os meses
-            const monthsDiff = Math.floor(daysDiff / 30);
-            setMonths(monthsDiff);
+            // Cálculo dos dias até o próximo dia 6
+            const startDay = startDate.getDate(); // Dia 6
+            const currentDay = today.getDate();
 
-            // Calcula horas, minutos e segundos
-            const hoursDiff = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutesDiff = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            let nextAnniversaryMonth = today.getMonth();
+            let nextAnniversaryYear = today.getFullYear();
 
-            setHours(hoursDiff);
-            setMinutes(minutesDiff);
-            setSeconds(secondsDiff);
+            if (currentDay >= startDay) {
+                nextAnniversaryMonth += 1;
+                if (nextAnniversaryMonth > 11) {
+                    nextAnniversaryMonth = 0;
+                    nextAnniversaryYear += 1;
+                }
+            }
+
+            const nextAnniversary = new Date(nextAnniversaryYear, nextAnniversaryMonth, startDay);
+            const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const nextAnniversaryMidnight = new Date(nextAnniversary.getFullYear(), nextAnniversary.getMonth(), nextAnniversary.getDate());
+
+            const timeDiff = nextAnniversaryMidnight.getTime() - todayMidnight.getTime();
+            const daysLeft = Math.floor(timeDiff / 86400000);
+
+            setDaysUntilNextMonth(Math.max(0, daysLeft));
         };
 
-        // Atualiza o contador a cada segundo
-        const interval = setInterval(calculateTime, 1000);
+        calculateTime();
+        const interval = setInterval(calculateTime, 86400000);
 
-        // Limpa o intervalo quando o componente é desmontado
         return () => clearInterval(interval);
     }, [startDate]);
 
@@ -45,9 +55,7 @@ const RelationshipCounter: React.FC = () => {
             <h1>❤️ Nosso Tempo Juntos</h1>
             <p>
                 Estamos juntos há: <br />
-                <strong>{months}</strong> meses, <strong>{days}</strong> dias,{' '}
-                <strong>{hours}</strong> horas, <strong>{minutes}</strong> minutos e{' '}
-                <strong>{seconds}</strong> segundos!
+                <strong>{months}</strong> meses, e faltam <strong>{daysUntilNextMonth}</strong> dias para o próximo mês!
             </p>
             <p style={{ fontSize: '1.5rem', marginTop: '20px' }}>
                 Cada segundo ao seu lado é um momento especial. Te amo! 💖
