@@ -1,60 +1,299 @@
-/* Estilos desktop */
-body {
+:root {
+  --primary-color: #ffffff;
+  --accent-color: #ff9a9e;
+  --glass-bg: rgba(20, 20, 20, 0.65);
+  /* Mais translúcido */
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: 'Great Vibes', cursive, sans-serif;
-  background: url('./assets/nos.JPEG') no-repeat center center fixed;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  /* Fundo da sua imagem */
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./assets/nos.jpeg');
+  background-position: center;
   background-size: cover;
-  color: #5d3a3a;
-  min-height: 100vh;
+  background-attachment: fixed;
+  color: var(--primary-color);
   display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+}
+
+.App {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* CONTAINER PRINCIPAL */
+.counter-container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  /* Mais blur para sofisticação */
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 5vw, 2.5rem);
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  animation: fadeInUp 1s ease-out;
+  position: relative;
+  overflow: hidden;
+  /* Mantém tudo dentro das bordas arredondadas */
+}
+
+/* Brilho sutil no topo do vidro */
+.counter-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 9vw, 2.8rem);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* CRONÔMETRO */
+.timer-grid {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 15px;
+  margin-bottom: 2.5rem;
+}
+
+.timer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.number {
+  font-size: clamp(3.5rem, 15vw, 5rem);
+  font-weight: 800;
+  line-height: 0.9;
+  background: linear-gradient(180deg, #fff, #ffccd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 10px;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+.separator {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  opacity: 0.6;
+  margin: 0 5px;
+}
+
+/* === GALERIA SCRAPBOOK (NOVO) === */
+.mini-gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140px;
+  /* Altura reservada para as fotos */
+  margin: 1rem 0 2rem 0;
+  position: relative;
+}
+
+.photo-frame {
+  width: 90px;
+  height: 110px;
+  /* Formato retrato polaroide */
+  background: white;
+  padding: 5px 5px 20px 5px;
+  /* Simula a borda grossa da polaroide embaixo */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: absolute;
+  /* Para sobrepor levemente */
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(10%);
+  /* Filtro levemente vintage */
+}
+
+/* Posicionamento orgânico */
+.left-tilt {
+  transform: rotate(-10deg) translateX(-60px) scale(0.9);
+  z-index: 1;
+}
+
+.right-tilt {
+  transform: rotate(10deg) translateX(60px) scale(0.9);
+  z-index: 1;
+}
+
+.center-focus {
+  transform: rotate(0deg) scale(1.1);
+  z-index: 2;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Efeito Hover na Galeria */
+.mini-gallery:hover .left-tilt {
+  transform: rotate(-15deg) translateX(-70px) scale(0.95);
+}
+
+.mini-gallery:hover .right-tilt {
+  transform: rotate(15deg) translateX(70px) scale(0.95);
+}
+
+.mini-gallery:hover .center-focus {
+  transform: scale(1.15);
+}
+
+
+/* === CAIXA DE MENSAGENS INTERATIVA (NOVO) === */
+.message-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.App {
-  text-align: center;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  max-width: 90%;
-  margin: 20px;
+.message-box:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
-h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  color: #5d3a3a;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+.click-hint {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  margin-bottom: 8px;
 }
 
-p {
-  font-size: 1.8rem;
-  color: #5d3a3a;
-  line-height: 1.6;
+.fade-in-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.4;
+  animation: fadeInText 0.5s ease-in;
 }
 
-strong {
-  color: #ff6f61;
+.love-note {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Estilos mobile */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.5rem;
+/* Animações */
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
   }
 
-  p {
-    font-size: 1.5rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Batimento cardíaco */
+.heart-beat {
+  display: inline-block;
+  animation: beat 1.5s infinite ease-in-out;
+}
+
+@keyframes beat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Mobile Adjustments */
 @media (max-width: 480px) {
-  h1 {
-    font-size: 2rem;
+  .counter-container {
+    padding: 2rem 1.5rem;
   }
 
-  p {
-    font-size: 1.2rem;
+  .photo-frame {
+    width: 75px;
+    height: 95px;
+  }
+
+  .left-tilt {
+    transform: rotate(-8deg) translateX(-45px) scale(0.9);
+  }
+
+  .right-tilt {
+    transform: rotate(8deg) translateX(45px) scale(0.9);
+  }
+
+  .message-box {
+    padding: 1rem;
+  }
+
+  .fade-in-text {
+    font-size: 1.1rem;
   }
 }
